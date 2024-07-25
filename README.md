@@ -6,6 +6,7 @@ algumas tecnologias utilizadas:
 - Framework Fastify
 - ORM prisma
 - SQLite
+- nodemailer - envio de email "fake"
 
 Front desse projeto(React) no repositorio: https://github.com/BePenques/react-planner-nlw-ts
 
