@@ -6,8 +6,8 @@ import { dayjs } from "../lib/dayjs";
 import { prisma } from "../lib/prisma";
 import { ClientError } from "../errors/client-error";
 
-export async function getLinks(app: FastifyInstance){
-    app.withTypeProvider<ZodTypeProvider>().get('/trips/:tripId/links',{
+export async function getTripDetails(app: FastifyInstance){
+    app.withTypeProvider<ZodTypeProvider>().get('/trips/:tripId',{
         schema:{
             params:z.object({
                 tripId: z.string().uuid(),
@@ -18,18 +18,22 @@ export async function getLinks(app: FastifyInstance){
   
 
         const trip = await prisma.trip.findUnique({
+            select:{
+                id: true,
+                destination: true,
+                starts_at: true,
+                ends_at: true,
+                is_confirmed: true
+            },
             where: {
                 id: tripId
             },
-            include: { 
-               Link: true,
-            }
         })
 
         if(!trip){
             throw new ClientError('Trip not found')
-        }   
+        }       
 
-        return {links: trip.Link}
+        return {trip}
     })
 }
